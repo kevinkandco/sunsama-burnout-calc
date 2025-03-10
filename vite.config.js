@@ -22,13 +22,14 @@ export default defineConfig({
       formats: ['umd', 'es'],
     },
     rollupOptions: {
+      external: ['react', 'react-dom'],
       output: {
-        inlineDynamicImports: true,
         globals: {
           react: 'React',
           'react-dom': 'ReactDOM'
-        }
-      },
+        },
+        inlineDynamicImports: true,
+      }
     },
     cssCodeSplit: false,
   },
