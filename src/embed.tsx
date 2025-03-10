@@ -1,5 +1,6 @@
-
+import React from 'react';
 import { createRoot } from 'react-dom/client';
+import { Toaster } from '@/components/ui/sonner';
 import BurnoutCalculator from '@/components/BurnoutCalculator';
 import './index.css';
 
@@ -25,25 +26,34 @@ export function setupEmbedEnvironment() {
     window.__BURNOUT_CALC_BASE_URL__);
 }
 
-// Function to embed the calculator in any DOM element
-export function embedBurnoutCalculator(targetElement: HTMLElement) {
-  // Setup the environment first
-  setupEmbedEnvironment();
-  
-  const root = createRoot(targetElement);
-  root.render(<BurnoutCalculator />);
+// Function to embed the calculator
+function embedBurnoutCalculator(targetElement: HTMLElement) {
+  try {
+    setupEmbedEnvironment();
+    const root = createRoot(targetElement);
+    root.render(
+      <React.StrictMode>
+        <Toaster />
+        <BurnoutCalculator />
+      </React.StrictMode>
+    );
+  } catch (error) {
+    console.error('Failed to initialize Burnout Calculator:', error);
+  }
 }
 
-// Auto-initialize if there's a default container
+// Make it available globally
 if (typeof window !== 'undefined') {
+  // @ts-ignore
+  window.embedBurnoutCalculator = embedBurnoutCalculator;
+  
+  // Auto-initialize if default container exists
   window.addEventListener('DOMContentLoaded', () => {
     const defaultContainer = document.getElementById('burnout-calculator-container');
     if (defaultContainer) {
       embedBurnoutCalculator(defaultContainer);
     }
   });
-
-  // Expose the embed function globally for manual initialization
-  // @ts-ignore
-  window.embedBurnoutCalculator = embedBurnoutCalculator;
 }
+
+export { embedBurnoutCalculator };
