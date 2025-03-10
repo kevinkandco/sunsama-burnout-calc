@@ -1,15 +1,12 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Toaster } from '@/components/ui/sonner';
+import { TooltipProvider } from '@/components/ui/tooltip';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import BurnoutCalculator from '@/components/BurnoutCalculator';
 import './index.css';
 
-// Mock auth context to prevent auth-related errors
-const AuthContext = React.createContext({
-  user: null,
-  session: null,
-  isLoading: false
-});
+const queryClient = new QueryClient();
 
 // Function to add base URL for all assets
 export function setupEmbedEnvironment() {
@@ -40,10 +37,12 @@ function embedBurnoutCalculator(targetElement: HTMLElement) {
     const root = createRoot(targetElement);
     root.render(
       <React.StrictMode>
-        <AuthContext.Provider value={{ user: null, session: null, isLoading: false }}>
-          <Toaster />
-          <BurnoutCalculator />
-        </AuthContext.Provider>
+        <QueryClientProvider client={queryClient}>
+          <TooltipProvider>
+            <Toaster />
+            <BurnoutCalculator />
+          </TooltipProvider>
+        </QueryClientProvider>
       </React.StrictMode>
     );
   } catch (error) {
