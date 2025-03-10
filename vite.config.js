@@ -9,6 +9,11 @@ export default defineConfig({
       credentials: true
     }
   },
+  define: {
+    'process.env': {
+      NODE_ENV: JSON.stringify(process.env.NODE_ENV)
+    }
+  },
   build: {
     lib: {
       entry: path.resolve(__dirname, 'src/embed.tsx'),
@@ -19,6 +24,10 @@ export default defineConfig({
     rollupOptions: {
       output: {
         inlineDynamicImports: true,
+        globals: {
+          react: 'React',
+          'react-dom': 'ReactDOM'
+        }
       },
     },
     cssCodeSplit: false,
