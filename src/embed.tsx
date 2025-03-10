@@ -4,6 +4,13 @@ import { Toaster } from '@/components/ui/sonner';
 import BurnoutCalculator from '@/components/BurnoutCalculator';
 import './index.css';
 
+// Mock auth context to prevent auth-related errors
+const AuthContext = React.createContext({
+  user: null,
+  session: null,
+  isLoading: false
+});
+
 // Function to add base URL for all assets
 export function setupEmbedEnvironment() {
   // Create a global variable to hold the base URL
@@ -33,8 +40,10 @@ function embedBurnoutCalculator(targetElement: HTMLElement) {
     const root = createRoot(targetElement);
     root.render(
       <React.StrictMode>
-        <Toaster />
-        <BurnoutCalculator />
+        <AuthContext.Provider value={{ user: null, session: null, isLoading: false }}>
+          <Toaster />
+          <BurnoutCalculator />
+        </AuthContext.Provider>
       </React.StrictMode>
     );
   } catch (error) {
