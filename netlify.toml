@@ -1,3 +1,7 @@
+[build]
+  command = "node scripts/build-embed.cjs"
+  publish = "dist"
+
 [[headers]]
   for = "/*"
     [headers.values]

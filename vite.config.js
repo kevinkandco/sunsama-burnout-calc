@@ -3,6 +3,7 @@ import path from 'path'
 import react from "@vitejs/plugin-react-swc"
 
 export default defineConfig({
+  plugins: [react()],
   server: {
     cors: {
       origin: "*",
@@ -15,6 +16,7 @@ export default defineConfig({
     }
   },
   build: {
+    outDir: 'dist',
     lib: {
       entry: path.resolve(__dirname, 'src/embed.tsx'),
       name: 'BurnoutCalculator',
